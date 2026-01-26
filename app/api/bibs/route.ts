@@ -22,6 +22,7 @@ export async function GET(req: Request) {
     const participants = await Participant.find({ mobile: decoded.mobile })
       .populate({
         path: 'event',
+        model: Event,
         select: 'name date venue deliveryEnabled'
       });
 
