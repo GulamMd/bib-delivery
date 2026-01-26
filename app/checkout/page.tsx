@@ -18,12 +18,17 @@ import {
   CreditCard,
   Wallet,
   MapPin,
+  Crosshair,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 
-export default function CheckoutPage() {
+  // Dynamically import Leaflet to avoid SSR issues
+  const Map = dynamic(() => import("./MapComponent"), { ssr: false });
+
+  export default function CheckoutPage() {
+
   const router = useRouter();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -39,6 +44,24 @@ export default function CheckoutPage() {
     { lat: 22.5726, lng: 88.3639 },
   );
   const [mapKey, setMapKey] = useState(0);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setUserLocation({ lat, lng });
+          // Optionally set default location to user location on load
+          // setLocation({ lat, lng }); 
+        },
+        (err) => console.log("Location access denied or error:", err)
+      );
+    }
+  }, []);
 
   useEffect(() => {
     const stored = localStorage.getItem("cart_items");
@@ -140,8 +163,7 @@ export default function CheckoutPage() {
     );
   }
 
-  // Dynamically import Leaflet to avoid SSR issues
-  const Map = dynamic(() => import("./MapComponent"), { ssr: false });
+
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
@@ -168,52 +190,88 @@ export default function CheckoutPage() {
               <CardContent className="space-y-4">
                 <div className="grid gap-4">
                   {/* Map Section */}
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">
-                      Select Location on Map
-                    </label>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <label className="text-sm font-medium">
+                        Select Location on Map
+                      </label>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(
+                              (position) => {
+                                const lat = position.coords.latitude;
+                                const lng = position.coords.longitude;
+                                setUserLocation({ lat, lng }); // Update user marker
+                                setLocation({ lat, lng }); // Move map center
+                              },
+                              () => alert("Could not access location"),
+                            );
+                          }
+                        }}
+                        className="h-8 gap-2 text-xs border-primary/20 hover:bg-primary/5 hover:text-primary transition-colors"
+                      >
+                        <Crosshair className="w-3.5 h-3.5" /> Use My Current Location
+                      </Button>
+                    </div>
                     <div
-                      style={{
-                        width: "100%",
-                        height: "300px",
-                        borderRadius: "8px",
-                        overflow: "hidden",
-                        background: "#eee",
-                      }}
+                      className="relative w-full h-[350px] rounded-xl overflow-hidden border border-border/50 shadow-inner bg-muted/20"
                     >
                       <Map
-                        key={mapKey}
+                        // key={mapKey} // Removed key to allow flyTo animation without remounting
                         location={location}
-                        setLocation={(loc: { lat: number; lng: number }) => {
-                          setLocation(loc);
-                          setMapKey((k) => k + 1);
-                        }}
+                        setLocation={setLocation}
                         setStreet={setStreet}
                         setCity={setCity}
                         setZip={setZip}
+                        userLocation={userLocation}
                       />
                     </div>
-                    <Input
-                      type="text"
-                      placeholder="Search for address..."
-                      className="h-11 bg-muted/50 mt-2"
-                      onBlur={async (e) => {
-                        const address = e.target.value;
-                        if (!address) return;
-                        const res = await fetch(
-                          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`,
-                        );
-                        const data = await res.json();
-                        if (data && data[0]) {
-                          setLocation({
-                            lat: parseFloat(data[0].lat),
-                            lng: parseFloat(data[0].lon),
-                          });
-                          setStreet(data[0].display_name);
-                          // Optionally parse city and zip from address details
-                        }
-                      }}
-                    />
+                    <div className="relative z-50">
+                       <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
+                      <Input
+                        type="text"
+                        placeholder="Search for area, street name..."
+                        className="pl-9 h-11 bg-muted/50 border-input/50 focus:bg-background transition-all"
+                        value={searchTerm}
+                        onChange={(e) => {
+                          setSearchTerm(e.target.value);
+                          if (e.target.value.length > 2) {
+                            // Debouce would be better, but simple is okay for now
+                            fetch(
+                              `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(e.target.value)}&limit=5`,
+                            )
+                              .then((res) => res.json())
+                              .then((data) => setSearchResults(data));
+                          } else {
+                            setSearchResults([]);
+                          }
+                        }}
+                      />
+                        {searchResults.length > 0 && (
+                        <div className="absolute top-full left-0 right-0 bg-popover text-popover-foreground shadow-md rounded-md mt-1 border border-border overflow-hidden z-[100]">
+                            {searchResults.map((result: any, idx) => (
+                            <div
+                                key={idx}
+                                className="px-4 py-2 hover:bg-muted cursor-pointer text-sm truncate"
+                                onClick={() => {
+                                setLocation({
+                                    lat: parseFloat(result.lat),
+                                    lng: parseFloat(result.lon),
+                                });
+                                // setStreet(result.display_name); // Map component will handle reverse geocoding
+                                setSearchResults([]);
+                                setSearchTerm("");
+                                }}
+                            >
+                                {result.display_name}
+                            </div>
+                            ))}
+                        </div>
+                        )}
+                    </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium">
