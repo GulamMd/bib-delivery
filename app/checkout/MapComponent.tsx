@@ -7,7 +7,12 @@ function MapController({ location }: { location: { lat: number; lng: number } })
   const map = useMap();
   useEffect(() => {
     if (location) {
-      map.flyTo([location.lat, location.lng], map.getZoom(), { animate: true });
+      const center = map.getCenter();
+      // Only fly if distance is significant to avoid feedback loops
+      const dist = Math.sqrt(Math.pow(center.lat - location.lat, 2) + Math.pow(center.lng - location.lng, 2));
+      if (dist > 0.0001) {
+        map.flyTo([location.lat, location.lng], map.getZoom(), { animate: true });
+      }
     }
   }, [location, map]);
   return null;
@@ -22,6 +27,7 @@ export default function MapComponent({
   userLocation,
 }: any) {
   const [isDrag, setIsDrag] = useState(false);
+  const [lastFetchedLoc, setLastFetchedLoc] = useState<{ lat: number; lng: number } | null>(null);
 
   function MapEvents() {
     const map = useMap();
@@ -45,11 +51,20 @@ export default function MapComponent({
   }
 
   const handleLocationSelect = async (latlng: { lat: number; lng: number }) => {
+    // Only update and fetch if the location moved significantly from the last geocoding attempt
+    if (lastFetchedLoc) {
+      const dist = Math.sqrt(Math.pow(lastFetchedLoc.lat - latlng.lat, 2) + Math.pow(lastFetchedLoc.lng - latlng.lng, 2));
+      if (dist < 0.00005) return; 
+    }
+
     setLocation(latlng);
+    setLastFetchedLoc(latlng);
+
     try {
       const res = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}`
       );
+      if (!res.ok) throw new Error("Network response was not ok");
       const data = await res.json();
       if (data && data.display_name) {
         setStreet(data.display_name);
