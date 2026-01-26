@@ -14,11 +14,11 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50/50 dark:bg-slate-950 pb-24">
-       <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-20 border-b">
+    <div className="min-h-screen bg-background pb-24">
+       <header className="bg-background/80 backdrop-blur-md sticky top-0 z-20 border-b border-border">
          <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
            <div className="flex items-center gap-2">
-             <div className="h-8 w-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">R</div>
+             <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">B</div>
              <h1 className="font-bold text-xl tracking-tight text-foreground">Dashboard</h1>
            </div>
            <div className="flex gap-4">

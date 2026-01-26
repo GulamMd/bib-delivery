@@ -70,7 +70,7 @@ export function CustomerLoginForm() {
 
   return (
     <Card className="glass shadow-2xl border-white/20 dark:border-white/10 overflow-hidden">
-      <div className="h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+      <div className="h-2 bg-gradient-to-r from-primary to-accent-foreground" />
       <CardHeader className="space-y-1 pb-4">
         <CardTitle className="text-2xl font-bold text-center">
           {step === "MOBILE" ? "Get Started" : "Verify Mobile"}
@@ -118,7 +118,7 @@ export function CustomerLoginForm() {
                </div>
             </div>
             {error && <p className="text-sm text-destructive text-center bg-destructive/10 p-2 rounded">{error}</p>}
-            <Button type="submit" className="w-full h-11 text-base font-semibold shadow-lg shadow-indigo-500/20" disabled={loading}>
+            <Button type="submit" className="w-full h-11 text-base font-semibold shadow-lg shadow-primary/20" disabled={loading}>
               {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Verify & Login"}
             </Button>
             <Button 

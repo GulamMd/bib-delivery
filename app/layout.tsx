@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-geist-sans" }); // Reusing var name to avoid breaking css
 
 export const metadata: Metadata = {
-  title: "Marathon Bib Delivery",
-  description: "Fast and reliable bib delivery for marathon runners.",
+  title: "BibGo | Race-ready. Delivered.",
+  description: "Fast delivery of race identity. Skip the expo lines.",
 };
 
 export default function RootLayout({

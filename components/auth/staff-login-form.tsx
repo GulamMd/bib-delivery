@@ -41,11 +41,11 @@ export function StaffLoginForm({ roleLabel, redirectPath }: { roleLabel: string,
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4 relative overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 -z-10" />
-      <div className="absolute top-[-10%] right-[-5%] w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-[-10%] left-[-5%] w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 -z-10" />
+      <div className="absolute top-[-10%] right-[-5%] w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-[-10%] left-[-5%] w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
 
       <Card className="w-full max-w-md shadow-xl border-white/20 glass">
         <CardHeader className="text-center pb-2">

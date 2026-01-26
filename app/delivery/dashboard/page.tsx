@@ -61,7 +61,7 @@ export default function DeliveryDashboard() {
 
   if (activeOrder) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6 flex items-center justify-center">
+      <div className="min-h-screen bg-background p-6 flex items-center justify-center">
          <Card className="w-full max-w-md">
             <CardContent className="pt-6 space-y-4">
               <h2 className="text-xl font-bold">{actionType === "PICKUP" ? "Enter Pickup PIN" : "Enter Delivery OTP"}</h2>
@@ -83,8 +83,8 @@ export default function DeliveryDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-       <header className="bg-primary text-primary-foreground p-4 sticky top-0 z-10">
+    <div className="min-h-screen bg-background pb-20">
+       <header className="bg-primary text-primary-foreground p-4 sticky top-0 z-10 shadow-lg shadow-primary/20">
          <div className="flex justify-between items-center">
            <h1 className="font-bold text-lg">Delivery Partner</h1>
            <Button variant="ghost" size="sm" onClick={() => router.push("/")}>Logout</Button>

@@ -128,7 +128,7 @@ export function BibList() {
               )}
             >
               <div className="flex justify-between items-start mb-4">
-                 <div className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white px-3 py-1 rounded-md text-sm font-bold shadow-sm">
+                 <div className="bg-primary text-primary-foreground px-3 py-1 rounded-md text-sm font-bold shadow-sm">
                    BIB {bib.bibNumber}
                  </div>
                  <div className={cn("w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors", 
@@ -147,15 +147,15 @@ export function BibList() {
 
               <div className="space-y-2 text-sm text-muted-foreground border-t pt-4">
                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-indigo-500" /> 
+                    <Calendar className="w-4 h-4 text-primary" /> 
                     {new Date(bib.event?.date).toLocaleDateString(undefined, { dateStyle: 'medium' })}
                  </div>
                  <div className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-indigo-500 mt-0.5" /> 
+                    <MapPin className="w-4 h-4 text-primary mt-0.5" /> 
                     <span className="line-clamp-1">{bib.event?.venue}</span>
                  </div>
                  <div className="flex items-center gap-2">
-                    <Trophy className="w-4 h-4 text-indigo-500" />
+                    <Trophy className="w-4 h-4 text-primary" />
                     <span className="font-medium text-foreground">{bib.event?.name}</span>
                  </div>
               </div>
@@ -166,11 +166,11 @@ export function BibList() {
 
       {selectedBibs.length > 0 && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-full max-w-md px-4 z-50">
-          <div className="bg-foreground text-background rounded-full shadow-2xl p-2 pl-6 flex justify-between items-center animate-in slide-in-from-bottom-10">
+          <div className="bg-card border border-border text-card-foreground rounded-full shadow-2xl p-2 pl-6 flex justify-between items-center animate-in slide-in-from-bottom-10 ring-1 ring-black/5">
              <div className="flex flex-col">
-               <span className="font-bold">{selectedBibs.length} Bib{selectedBibs.length > 1 ? 's' : ''} Selected</span>
+               <span className="font-bold text-primary">{selectedBibs.length} Bib{selectedBibs.length > 1 ? 's' : ''} Selected</span>
              </div>
-             <Button onClick={proceed} size="lg" className="rounded-full px-8 shadow-none hover:scale-105 transition-transform">
+             <Button onClick={proceed} size="lg" className="rounded-full px-8 shadow-none hover:scale-105 transition-transform bg-primary text-primary-foreground hover:bg-primary/90">
                 Checkout <ArrowRight className="ml-2 w-4 h-4" />
              </Button>
           </div>

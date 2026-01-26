@@ -14,7 +14,7 @@ export default function Home() {
       </div>
 
       <nav className="flex justify-between items-center p-6 max-w-7xl mx-auto w-full z-10">
-        <div className="font-bold text-2xl tracking-tight text-primary">RunDeliv.</div>
+        <div className="font-bold text-2xl tracking-tight text-primary">BibGo</div>
         <div className="flex gap-4 text-sm font-medium">
              <Link href="/organizer/login" className="hover:text-primary transition-colors">Organizers</Link>
              <Link href="/delivery/login" className="hover:text-primary transition-colors">Partners</Link>
@@ -27,7 +27,7 @@ export default function Home() {
         <div className="flex-1 space-y-8 text-center md:text-left">
           <div className="space-y-4">
              <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                🚀 Fast & Reliable
+                🚀 Race-ready. Delivered.
              </div>
              <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight">
                Marathon Bibs, <br/>
@@ -59,7 +59,7 @@ export default function Home() {
       </section>
 
       <footer className="py-6 text-center text-sm text-muted-foreground border-t bg-white/50 dark:bg-black/20 backdrop-blur-sm">
-        <p>&copy; 2025 RunDeliv Platform. All rights reserved.</p>
+        <p>&copy; 2025 BibGo Platform. All rights reserved.</p>
       </footer>
     </main>
   );

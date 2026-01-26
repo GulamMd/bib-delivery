@@ -58,40 +58,40 @@ export default function TrackingPage() {
   // Let's just string match or map.
   
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen bg-background p-4">
       <div className="max-w-md mx-auto space-y-6">
-        <h1 className="text-2xl font-bold text-center">Tracking #{order._id.slice(-6)}</h1>
+        <h1 className="text-2xl font-bold text-center tracking-tight">Tracking #{order._id.slice(-6).toUpperCase()}</h1>
         
         <div className="space-y-4">
-          <div className="bg-white p-6 rounded-lg shadow space-y-6 relative">
+          <div className="bg-card border border-border p-6 rounded-xl shadow-sm space-y-6 relative">
              {/* Timeline */}
              {steps.map((step, idx) => (
                <div key={idx} className="flex gap-4">
                  <div className="flex flex-col items-center">
-                   <div className={`w-4 h-4 rounded-full z-10 ${currentStatusIndex >= idx ? 'bg-green-500' : 'bg-gray-300'}`} />
-                   {idx < steps.length - 1 && <div className="w-0.5 h-full bg-gray-200 mt-1" />}
+                   <div className={`w-4 h-4 rounded-full z-10 ${currentStatusIndex >= idx ? 'bg-accent-foreground' : 'bg-muted'}`} />
+                   {idx < steps.length - 1 && <div className="w-0.5 h-full bg-border mt-1" />}
                  </div>
                  <div className={`${currentStatusIndex >= idx ? 'text-foreground' : 'text-muted-foreground'} pb-6`}>
-                   <p className="font-medium">{step}</p>
-                   {currentStatusIndex === idx && <p className="text-xs text-green-600 font-bold">Current Status</p>}
+                   <p className="font-semibold">{step}</p>
+                   {currentStatusIndex === idx && <p className="text-xs text-accent-foreground font-bold uppercase tracking-wider">Current Status</p>}
                  </div>
                </div>
              ))}
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow space-y-2">
-             <p className="font-semibold text-lg">Delivery Details</p>
-             <p className="text-sm">OTP: <span className="font-bold text-xl tracking-widest">{order.deliveryOtp}</span></p>
-             <p className="text-xs text-muted-foreground">Share this OTP with delivery partner.</p>
+          <div className="bg-card border border-border p-6 rounded-xl shadow-sm space-y-2">
+             <p className="font-bold text-lg">Delivery Details</p>
+             <p className="text-sm">OTP: <span className="font-mono font-bold text-2xl tracking-[0.2em] text-primary">{order.deliveryOtp}</span></p>
+             <p className="text-xs text-muted-foreground uppercase font-medium">Share this OTP with delivery partner.</p>
              
-             <div className="pt-4 border-t mt-4">
-                <p className="font-medium">Delivery Agent</p>
-                {order.deliveryPerson ? <p>{order.deliveryPerson.name} ({order.deliveryPerson.mobile})</p> : <p className="text-muted-foreground">Assigning soon...</p>}
+             <div className="pt-4 border-t border-border mt-4">
+                <p className="font-bold text-sm text-muted-foreground uppercase">Delivery Agent</p>
+                {order.deliveryPerson ? <p className="font-medium">{order.deliveryPerson.name} ({order.deliveryPerson.mobile})</p> : <p className="text-muted-foreground italic">Assigning soon...</p>}
              </div>
           </div>
         </div>
         
-        <button onClick={() => router.push("/dashboard")} className="w-full text-primary underline">Back to Dashboard</button>
+        <button onClick={() => router.push("/dashboard")} className="w-full text-primary font-medium hover:underline transition-all">Back to Dashboard</button>
       </div>
     </div>
   )

@@ -107,9 +107,9 @@ export default function CheckoutPage() {
 
   if (orderId) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center space-y-6 bg-gradient-to-b from-green-50 to-white dark:from-slate-900 dark:to-slate-950">
-        <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-4 animate-in zoom-in duration-500">
-          <CheckCircle className="w-12 h-12 text-green-600" />
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center space-y-6 bg-background">
+        <div className="w-24 h-24 bg-accent/20 rounded-full flex items-center justify-center mb-4 animate-in zoom-in duration-500">
+          <CheckCircle className="w-12 h-12 text-accent-foreground" />
         </div>
         <h1 className="text-4xl font-extrabold tracking-tight">
           Order Confirmed!
@@ -123,7 +123,7 @@ export default function CheckoutPage() {
         <div className="grid gap-3 w-full max-w-xs pt-8">
           <Button
             size="lg"
-            className="w-full shadow-lg shadow-green-500/20"
+            className="w-full shadow-lg shadow-primary/20"
             onClick={() => router.push(`/tracking/${orderId}`)}
           >
             Track Order
@@ -144,7 +144,7 @@ export default function CheckoutPage() {
   const Map = dynamic(() => import("./MapComponent"), { ssr: false });
 
   return (
-    <div className="min-h-screen bg-gray-50/50 dark:bg-slate-950 p-4 md:p-8">
+    <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
         <Button
           variant="ghost"
@@ -159,7 +159,7 @@ export default function CheckoutPage() {
         <div className="grid md:grid-cols-3 gap-8">
           {/* Left Column: Address */}
           <div className="md:col-span-2 space-y-6">
-            <Card className="border-0 shadow-lg">
+            <Card className="border border-border shadow-sm">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <MapPin className="w-5 h-5 text-primary" /> Delivery Details
@@ -247,7 +247,7 @@ export default function CheckoutPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-0 shadow-lg opacity-50 relative overflow-hidden">
+            <Card className="border border-border shadow-sm opacity-50 relative overflow-hidden">
               <div className="absolute inset-0 bg-gray-100/50 z-10 flex items-center justify-center font-bold text-muted-foreground">
                 Card Payment (Coming Soon)
               </div>
@@ -269,8 +269,8 @@ export default function CheckoutPage() {
 
           {/* Right Column: Order Summary */}
           <div className="md:col-span-1">
-            <Card className="sticky top-6 border-0 shadow-xl bg-slate-900 text-white dark:bg-slate-800">
-              <CardHeader className="border-b border-white/10 pb-4">
+            <Card className="sticky top-6 border-0 shadow-xl bg-card text-card-foreground">
+              <CardHeader className="border-b border-border pb-4">
                 <CardTitle>Order Summary</CardTitle>
               </CardHeader>
               <CardContent className="pt-6 space-y-4">
@@ -281,12 +281,12 @@ export default function CheckoutPage() {
                   </div>
                 ))}
 
-                <div className="border-t border-white/10 pt-4 space-y-2">
+                <div className="border-t border-border pt-4 space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Delivery Fee</span>
+                    <span className="text-muted-foreground">Delivery Fee</span>
                     <span
                       className={cn(
-                        estimate ? "text-white" : "text-slate-500 italic",
+                        estimate ? "text-foreground font-medium" : "text-muted-foreground italic",
                       )}
                     >
                       {estimate ? `₹${estimate.deliveryFee}` : "Enter PIN"}
@@ -300,7 +300,7 @@ export default function CheckoutPage() {
               </CardContent>
               <CardFooter>
                 <Button
-                  className="w-full h-12 text-lg bg-white text-black hover:bg-gray-100 shadow-lg shadow-white/10"
+                  className="w-full h-12 text-lg shadow-lg shadow-primary/20"
                   disabled={!estimate || !street || loading}
                   onClick={placeOrder}
                 >

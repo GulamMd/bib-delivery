@@ -63,21 +63,21 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-background p-6">
        <div className="max-w-6xl mx-auto space-y-6">
          <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
             <Button variant="outline" onClick={() => router.push("/")}>Logout</Button>
          </div>
          
          <div className="grid gap-6">
-            <Card>
+            <Card className="border border-border shadow-sm">
               <CardHeader><CardTitle>Manage Orders</CardTitle></CardHeader>
               <CardContent>
-                {loading ? <Loader2 className="animate-spin" /> : (
+                {loading ? <div className="flex justify-center p-8"><Loader2 className="animate-spin text-primary" /></div> : (
                    <div className="space-y-4">
                      {orders.map((order) => (
-                       <div key={order._id} className="flex flex-col md:flex-row justify-between items-start md:items-center p-4 border rounded shadow-sm bg-white">
+                       <div key={order._id} className="flex flex-col md:flex-row justify-between items-start md:items-center p-4 border border-border rounded-xl shadow-sm bg-card transition-all hover:border-primary/50">
                          <div>
                             <p className="font-bold">Order #{order._id.slice(-6)}</p>
                             <p className="text-sm text-muted-foreground">{order.customer?.name || "Customer"} - {order.deliveryAddress.street}, {order.deliveryAddress.zip}</p>
