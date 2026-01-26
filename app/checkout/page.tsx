@@ -184,7 +184,7 @@ export default function CheckoutPage() {
                       <Map
                         key={mapKey}
                         location={location}
-                        setLocation={(loc) => {
+                        setLocation={(loc: { lat: number; lng: number }) => {
                           setLocation(loc);
                           setMapKey((k) => k + 1);
                         }}
@@ -244,33 +244,6 @@ export default function CheckoutPage() {
                     </div>
                   </div>
                 </div>
-                {/* Load Google Maps JS API */}
-                {!mapLoaded && (
-                  <script
-                    async
-                    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"
-                  ></script>
-                )}
-                <script>
-                  {`
-                     window.initMap = function() {
-                       const defaultLoc = { lat: 22.5726, lng: 88.3639 };
-                       const map = new window.google.maps.Map(document.getElementById('map'), {
-                         center: location || defaultLoc,
-                         zoom: 14
-                       });
-                       const marker = new window.google.maps.Marker({
-                         position: location || defaultLoc,
-                         map,
-                         draggable: true
-                       });
-                       marker.addListener('dragend', function(e) {
-                         setLocation({ lat: e.latLng.lat(), lng: e.latLng.lng() });
-                         // Optionally reverse geocode to update address fields
-                       });
-                     }
-                   `}
-                </script>
               </CardContent>
             </Card>
 
