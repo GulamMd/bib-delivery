@@ -102,10 +102,6 @@ const UserSchema = new Schema<IUser>(
   { timestamps: true }
 );
 
-// Indexes
-UserSchema.index({ mobile: 1 });
-UserSchema.index({ email: 1 });
-
 // Check if model already exists to prevent overwrite during hot reload
 const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
 

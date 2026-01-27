@@ -70,8 +70,7 @@ export function DashboardHeader() {
                  {user?.name ? user.name.charAt(0).toUpperCase() : <UserCircle2 className="w-5 h-5" />}
                </div>
                <div className="flex flex-col items-start text-xs text-left hidden sm:block">
-                  <span className="font-semibold">{user?.name || "Guest"}</span>
-                  <span className="text-muted-foreground scale-90 origin-left">{loading ? "..." : (user ? "Customer" : "Not Logged In")}</span>
+                  <span className="font-semibold text-sm">{user?.name || "Guest"}</span>
                </div>
                <ChevronDown className={`w-3 h-3 text-muted-foreground transition-transform ${menuOpen ? "rotate-180" : ""}`} />
              </Button>

@@ -45,6 +45,9 @@ export function BibList() {
   }
 
   const toggleBib = (id: string) => {
+    const bib = bibs.find(b => b._id === id);
+    if (bib?.orderInfo) return; // Can't select already ordered bibs
+
     if (selectedBibs.includes(id)) {
       setSelectedBibs(selectedBibs.filter(b => b !== id))
     } else {
@@ -124,18 +127,25 @@ export function BibList() {
               onClick={() => toggleBib(bib._id)}
               className={cn(
                 "group relative overflow-hidden rounded-xl border bg-card p-6 shadow-sm transition-all hover:shadow-md cursor-pointer",
-                isSelected ? "border-primary ring-1 ring-primary bg-primary/5" : "hover:border-primary/50"
+                isSelected ? "border-primary ring-1 ring-primary bg-primary/5" : "hover:border-primary/50",
+                bib.orderInfo && "opacity-90 cursor-default"
               )}
             >
               <div className="flex justify-between items-start mb-4">
                  <div className="bg-primary text-primary-foreground px-3 py-1 rounded-md text-sm font-bold shadow-sm">
                    BIB {bib.bibNumber}
                  </div>
-                 <div className={cn("w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors", 
-                    isSelected ? "bg-primary border-primary text-primary-foreground" : "border-muted-foreground/30"
-                 )}>
-                    {isSelected && <CheckCircle2 className="w-4 h-4" />}
-                 </div>
+                 {bib.orderInfo ? (
+                    <div className="flex items-center gap-1.5 text-green-600 bg-green-50 px-2 py-1 rounded-full text-xs font-bold">
+                       <CheckCircle2 className="w-3.5 h-3.5" /> Ordered
+                    </div>
+                 ) : (
+                    <div className={cn("w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors", 
+                        isSelected ? "bg-primary border-primary text-primary-foreground" : "border-muted-foreground/30"
+                    )}>
+                        {isSelected && <CheckCircle2 className="w-4 h-4" />}
+                    </div>
+                 )}
               </div>
               
               <h3 className="font-bold text-lg mb-1 group-hover:text-primary transition-colors">{bib.name}</h3>
@@ -143,6 +153,14 @@ export function BibList() {
                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
                     {bib.category || 'Participant'}
                  </span>
+                 {bib.orderInfo && (
+                   <span className={cn(
+                     "text-[10px] uppercase tracking-wider font-bold",
+                     bib.orderInfo.status === 'Delivered' ? "text-green-600" : "text-muted-foreground"
+                   )}>
+                      {bib.orderInfo.status}
+                   </span>
+                 )}
               </div>
 
               <div className="space-y-2 text-sm text-muted-foreground border-t pt-4">
@@ -159,6 +177,25 @@ export function BibList() {
                     <span className="font-medium text-foreground">{bib.event?.name}</span>
                  </div>
               </div>
+
+              {bib.orderInfo && (
+                <div className="mt-4 pt-4 border-t">
+                   <Button 
+                    className="w-full h-9 text-xs gap-2" 
+                    variant="outline"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      router.push(`/tracking/${bib.orderInfo.orderId}`);
+                    }}
+                   >
+                     {bib.orderInfo.status === 'Delivered' ? (
+                       <>Order Details <ArrowRight className="w-3.5 h-3.5" /></>
+                     ) : (
+                       <>Track Order <ArrowRight className="w-3.5 h-3.5" /></>
+                     )}
+                   </Button>
+                </div>
+              )}
             </div>
           )})}
         </div>

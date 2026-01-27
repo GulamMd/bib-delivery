@@ -34,6 +34,20 @@ export async function POST(req: Request) {
 
     await dbConnect();
 
+    // Prevent duplicate orders for same items
+    const participantIds = items.map((i: any) => i.participantId);
+    const existingOrder = await Order.findOne({
+      customer: decoded.id,
+      'items.participantId': { $in: participantIds },
+      status: { $nin: ['Cancelled', 'Delivery Failed'] }
+    });
+
+    if (existingOrder) {
+      return NextResponse.json({ 
+        error: 'One or more items in this order are already being processed. View existing order in dashboard.' 
+      }, { status: 400 });
+    }
+
     // Create Order
     const order = new Order({
       customer: decoded.id,

@@ -4,9 +4,9 @@ import Order from '@/models/Order';
 import { verifyToken } from '@/lib/auth';
 import { UserRole } from '@/models/User';
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const orderId = params.id;
+    const { id: orderId } = await params;
     const authHeader = req.headers.get('Authorization');
     const token = authHeader?.split(' ')[1];
     const decoded: any = token ? verifyToken(token) : null;

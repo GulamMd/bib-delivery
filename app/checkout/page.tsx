@@ -98,7 +98,7 @@ import "leaflet/dist/leaflet.css";
         street,
         city,
         zip,
-        location: { lat: 0, lng: 0 },
+        location: location || { lat: 22.5726, lng: 88.3639 },
       };
 
       const res = await fetch("/api/orders", {
